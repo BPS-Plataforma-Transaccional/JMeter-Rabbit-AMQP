@@ -137,7 +137,7 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
     }
 
     protected int getTimeoutAsInt() {
-        if (getPropertyAsInt(TIMEOUT) < 1) {
+        if (getPropertyAsInt(TIMEOUT) < 0) {
             return DEFAULT_TIMEOUT;
         }
         return getPropertyAsInt(TIMEOUT);
@@ -410,6 +410,7 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
         log.info("Creating channel " + getVirtualHost()+":"+getPortAsInt());
 
          if (connection == null || !connection.isOpen()) {
+	    //because we can set 0 as timeout, value of 0 will be infinite
             factory.setConnectionTimeout(getTimeoutAsInt());
             factory.setVirtualHost(getVirtualHost());
             factory.setUsername(getUsername());

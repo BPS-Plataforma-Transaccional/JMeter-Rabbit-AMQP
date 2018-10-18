@@ -35,7 +35,7 @@ public abstract class AMQPSamplerGui extends AbstractSamplerGui {
 
     protected JLabeledTextField host = new JLabeledTextField("Host");
     protected JLabeledTextField port = new JLabeledTextField("Port");
-    protected JLabeledTextField timeout = new JLabeledTextField("Timeout");
+    protected JLabeledTextField timeout = new JLabeledTextField("Timeout (0 for Infinite)");
     protected JLabeledTextField username = new JLabeledTextField("Username");
     protected JLabeledTextField password = new JLabeledTextField("Password");
     private final JCheckBox SSL = new JCheckBox("SSL?", false);
