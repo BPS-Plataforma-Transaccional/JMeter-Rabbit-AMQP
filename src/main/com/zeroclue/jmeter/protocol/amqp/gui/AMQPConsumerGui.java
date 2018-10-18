@@ -12,7 +12,7 @@ public class AMQPConsumerGui extends AMQPSamplerGui {
 
     private static final long serialVersionUID = 1L;
 
-    protected JLabeledTextField receiveTimeout = new JLabeledTextField("Receive Timeout");
+    protected JLabeledTextField receiveTimeout = new JLabeledTextField("Receive Timeout, Set to 0 to wait indefinitely");
     protected JLabeledTextField prefetchCount = new JLabeledTextField("Prefetch Count");
 
     private final JCheckBox purgeQueue = new JCheckBox("Purge Queue", false);

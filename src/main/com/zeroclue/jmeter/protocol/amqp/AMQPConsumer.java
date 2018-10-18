@@ -90,7 +90,16 @@ public class AMQPConsumer extends AMQPSampler implements Interruptible, TestStat
         QueueingConsumer.Delivery delivery = null;
         try {
             for (int idx = 0; idx < loop; idx++) {
-                delivery = consumer.nextDelivery(getReceiveTimeoutAsInt());
+		//allow blocking timeout 
+		switch(getReceiveTimeoutAsInt()){
+			case 0:
+			case 9999:
+				//blocks
+				delivery = consumer.nextDelivery();
+				break;
+			default:
+				delivery = consumer.nextDelivery(getReceiveTimeoutAsInt());
+		}	
 
                 if(delivery == null){
                     result.setResponseMessage("timed out");
