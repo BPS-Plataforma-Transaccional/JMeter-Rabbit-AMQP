@@ -298,7 +298,7 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
 
     public int getHeartbeatAsInt() { 
 	    int hb = getPropertyAsInt(HEARTBEAT);
-	    if (!((hb > -1) && (hb < 60))) {
+	    if (!((hb >= 0) && (hb <= 60))) {
 		return hb;
 	    }
     	return DEFAULT_HEARTBEAT;
@@ -412,7 +412,9 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
                 connection.close();
         } catch (IOException e) {
             log.error("Failed to close connection", e);
-        }
+        } catch (AlreadyClosedException e) {
+            log.error("Cnnection already closed", e);
+	}
     }
 
     @Override
