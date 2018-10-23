@@ -413,7 +413,9 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
         } catch (IOException e) {
             log.error("Failed to close connection", e);
         } catch (AlreadyClosedException e) {
-            log.error("Cnnection already closed", e);
+            log.error("Connection already closed", e);
+	} catch (ShutdownSignalException e) { 
+	    log.error("Connection shutdown by thread close", e);
 	}
     }
 
@@ -421,6 +423,7 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
     public void threadFinished() {
         log.info("AMQPSampler.threadFinished called");
         cleanup();
+
     }
 
     @Override
