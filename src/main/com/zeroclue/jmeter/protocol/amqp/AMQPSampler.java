@@ -31,7 +31,7 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
 
     public static final int DEFAULT_ITERATIONS = 1;
     public static final String DEFAULT_ITERATIONS_STRING = Integer.toString(DEFAULT_ITERATIONS);
-
+    
     private static final Logger log = LoggingManager.getLoggerForClass();
 
 
@@ -49,6 +49,7 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
     protected static final String SSL = "AMQPSampler.SSL";
     protected static final String USERNAME = "AMQPSampler.Username";
     protected static final String PASSWORD = "AMQPSampler.Password";
+    protected static final String HEARTBEAT = "AMQPSampler.Heartbeat";
     private static final String TIMEOUT = "AMQPSampler.Timeout";
     private static final String ITERATIONS = "AMQPSampler.Iterations";
     private static final String MESSAGE_TTL = "AMQPSampler.MessageTTL";
@@ -57,7 +58,9 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
     private static final String QUEUE_REDECLARE = "AMQPSampler.Redeclare";
     private static final String QUEUE_EXCLUSIVE = "AMQPSampler.QueueExclusive";
     private static final String QUEUE_AUTO_DELETE = "AMQPSampler.QueueAutoDelete";
-    private static final int DEFAULT_HEARTBEAT = 1;
+    // default heartbeat recommendation is 60
+    private static final int DEFAULT_HEARTBEAT = 60;
+
 
     private transient ConnectionFactory factory;
     private transient Connection connection;
@@ -289,6 +292,23 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
         return getPropertyAsInt(PORT);
     }
 
+    public String getHeartbeat() {
+	    return getPropertyAsString(HEARTBEAT);
+    }
+
+    public int getHeartbeatAsInt() { 
+	    int hb = getPropertyAsInt(HEARTBEAT);
+	    if (!((hb > -1) && (hb < 60))) {
+		return hb;
+	    }
+    	return DEFAULT_HEARTBEAT;
+    }
+
+    public void setHeartbeat(String value) {
+	setProperty(HEARTBEAT, value);
+    }	
+		    
+
     public void setConnectionSSL(String content) {
         setProperty(SSL, content);
     }
@@ -415,6 +435,7 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
             factory.setVirtualHost(getVirtualHost());
             factory.setUsername(getUsername());
             factory.setPassword(getPassword());
+	    factory.setRequestedHeartbeat(getHeartbeatAsInt());
             if (connectionSSL()) {
                 factory.useSslProtocol("TLS");
             }

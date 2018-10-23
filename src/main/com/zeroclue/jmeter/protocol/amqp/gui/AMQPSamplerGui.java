@@ -38,6 +38,7 @@ public abstract class AMQPSamplerGui extends AbstractSamplerGui {
     protected JLabeledTextField timeout = new JLabeledTextField("Timeout (0 for Infinite)");
     protected JLabeledTextField username = new JLabeledTextField("Username");
     protected JLabeledTextField password = new JLabeledTextField("Password");
+    protected JLabeledTextField heartbeat = new JLabeledTextField("Heartbeat");
     private final JCheckBox SSL = new JCheckBox("SSL?", false);
 
     private final JLabeledTextField iterations = new JLabeledTextField("Number of samples to Aggregate");
@@ -77,6 +78,7 @@ public abstract class AMQPSamplerGui extends AbstractSamplerGui {
         port.setText(sampler.getPort());
         username.setText(sampler.getUsername());
         password.setText(sampler.getPassword());
+	heartbeat.setText(sampler.getHeartbeat());
         SSL.setSelected(sampler.connectionSSL());
         log.info("AMQPSamplerGui.configure() called");
     }
@@ -100,7 +102,7 @@ public abstract class AMQPSamplerGui extends AbstractSamplerGui {
         queueExclusive.setSelected(false);
         queueAutoDelete.setSelected(false);
         queueRedeclare.setSelected(AMQPSampler.DEFAULT_QUEUE_REDECLARE);
-
+	heartbeat.setText("60");
 
         timeout.setText(AMQPSampler.DEFAULT_TIMEOUT_STRING);
         iterations.setText(AMQPSampler.DEFAULT_ITERATIONS_STRING);
@@ -137,6 +139,7 @@ public abstract class AMQPSamplerGui extends AbstractSamplerGui {
         sampler.setQueueRedeclare(queueRedeclare.isSelected());
 
         sampler.setTimeout(timeout.getText());
+	sampler.setHeartbeat(heartbeat.getText());
         sampler.setIterations(iterations.getText());
 
         sampler.setHost(host.getText());
@@ -263,21 +266,25 @@ public abstract class AMQPSamplerGui extends AbstractSamplerGui {
         gridBagConstraints.gridy = 2;
         serverSettings.add(port, gridBagConstraints);
 
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
         serverSettings.add(SSL, gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         serverSettings.add(username, gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         serverSettings.add(password, gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         serverSettings.add(timeout, gridBagConstraints);
+
+	gridBagConstraints.gridx = 0;
+	gridBagConstraints.gridy = 7;
+	serverSettings.add(heartbeat, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 1;
         gridBagConstraintsCommon.gridy = 0;
