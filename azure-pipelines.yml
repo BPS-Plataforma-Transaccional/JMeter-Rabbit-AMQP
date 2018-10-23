@@ -16,10 +16,18 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: $(Build.SourcesDirectory)/target/dist/
+    contents: '**' 
+    targetFolder: $(Build.ArtifactStagingDirectory)
+    cleanTargetFolder: true # Optional
+    overWrite: true # Optional
+    #flattenFolders: false # Optional
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)/target/dist/' 
-    artifactName: 'drop' 
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'jmrmqjar' 
     publishLocation: 'Container' # Options: container, filePath
                 #            #targetPath: # Required when publishLocation == FilePath
                 #                #parallel: false # Optional
